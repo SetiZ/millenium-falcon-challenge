@@ -1,21 +1,27 @@
-const empire = {
-  "countdown": 7,
-  "bounty_hunters": [
-    {
-      "planet": "Hoth",
-      "day": 6
-    },
-    {
-      "planet": "Hoth",
-      "day": 7
-    },
-    {
-      "planet": "Hoth",
-      "day": 8
-    }
-  ]
-}
-console.log(empire)
+// const empire = {
+//   "countdown": 7,
+//   "bounty_hunters": [
+//     {
+//       "planet": "Hoth",
+//       "day": 6
+//     },
+//     {
+//       "planet": "Hoth",
+//       "day": 7
+//     },
+//     {
+//       "planet": "Hoth",
+//       "day": 8
+//     }
+//   ]
+// }
+
+const odds = document.getElementById("odds");
+const launchButton = document.getElementById("launch");
+launchButton.addEventListener("click", (e) => {
+  console.log(empire)
+  fetchURLs()
+}, false)
 
 
 function travel(dep, arr, routes) {
@@ -79,6 +85,7 @@ async function fetchURLs() {
 
     if (timing.length === 0) {
       console.log(0)
+      odds.innerHTML = 0
     } else {
       console.log("check bounty")
     }
@@ -88,4 +95,4 @@ async function fetchURLs() {
   }
 }
 
-fetchURLs()
+// fetchURLs()
