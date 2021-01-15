@@ -1,22 +1,5 @@
-// const empire = {
-//   "countdown": 7,
-//   "bounty_hunters": [
-//     {
-//       "planet": "Hoth",
-//       "day": 6
-//     },
-//     {
-//       "planet": "Hoth",
-//       "day": 7
-//     },
-//     {
-//       "planet": "Hoth",
-//       "day": 8
-//     }
-//   ]
-// }
-
-const odds = document.getElementById("odds");
+let odds = 0;
+const results = document.getElementById("odds");
 const launchButton = document.getElementById("launch");
 launchButton.addEventListener("click", (e) => {
   console.log(empire)
@@ -57,6 +40,33 @@ function checkTime(route, countdown, autonomy) {
   return countdown >= sum;
 }
 
+function calculateOdds(route, bountyHunters) {
+  console.log(route, bountyHunters)
+  if (route.length > 1) { // have to stop at a planet
+    odds++
+  }
+
+  let time = 0
+  for (let i = 0; i < route.length; i ++) {
+    time = route[i].travel_time
+    bountyHunters.forEach((bounty) => {
+      if (bounty.day === time && route[i].destination === bounty.planet) {
+        odds++
+      }
+    })
+  }
+  return odds
+}
+
+function calculatePercent(odd) {
+  let calculate = 0
+  if (odd > 0) {
+    console.log(odd, Math.pow(9, odd-1)/Math.pow(10, odd))
+    calculate = (Math.pow(9, odd-1)/Math.pow(10, odd) + calculatePercent(odd-1))
+  }
+  return calculate
+}
+
 async function fetchURLs() {
   try {
     let [routes, autonomyObj, departureObj, arrivalObj] = await Promise.all([
@@ -85,9 +95,14 @@ async function fetchURLs() {
 
     if (timing.length === 0) {
       console.log(0)
-      odds.innerHTML = 0
+      results.innerHTML = 0
     } else {
-      console.log("check bounty")
+      console.log("check bounty", timing)
+      timing.forEach((odd) => {
+        let oddScore = calculateOdds(odd, bountyHunters)
+        let finalOdd = 1 - calculatePercent(oddScore);
+        results.innerHTML = finalOdd * 100
+      })
     }
 
   } catch (error) {
